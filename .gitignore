@@ -1,4 +1,10 @@
 /.vagrant
+<<<<<<< HEAD
+/src/.vagrant
+/**/*.DS_Store
+/*.DS_Store
+/**/*~
+=======
 /*~
 /target/*
 /.classpath
@@ -8,3 +14,4 @@
 *.iml
 .DS_Store
 test.txt
+>>>>>>> entrega
