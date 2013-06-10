@@ -1,0 +1,220 @@
+Simulation time: 60.183 seconds
+Exploded nodes: 2346
+Leaf nodes: 650474
+Solution depth: 29
+Generated states: 652821
+Symmetries found: 48924
+
+DFS on file: random.2.xml
+0.175 $s$ & 736 & 108 & 4 & 845 & 1056 
+
+BFS on file: random.2.xml
+0.522 $s$ & 7892 & 5612 & 4 & 13505 & 31872 
+
+ID on file: random.2.xml
+No solution found for depth: 0
+No solution found for depth: 1
+No solution found for depth: 2
+No solution found for depth: 3
+1364169697343
+1364169697814
+471
+0
+0.0 $s$ & 9380 & 108 & 4 & 9489 & 15648 
+
+DFS on file: random.3.xml
+60.192 $s$ & 1358970 & 1106 & 8 & 1360077 & 4328064 
+
+BFS on file: random.3.xml
+60.255 $s$ & 21340 & 1866356 & 2 & 1887697 & 2314512 
+
+ID on file: random.3.xml
+No solution found for depth: 0
+No solution found for depth: 1
+No solution found for depth: 2
+1364169822365
+1364169882699
+60334
+60
+0.0 $s$ & 1963069 & 422 & 3 & 1963492 & 2413296 
+
+DFS on file: random.4.xml
+60.184 $s$ & 801686 & 5938 & 16 & 807625 & 2451584 
+
+BFS on file: random.4.xml
+60.251 $s$ & 3766 & 1548602 & 2 & 1552369 & 1519200 
+
+ID on file: random.4.xml
+No solution found for depth: 0
+No solution found for depth: 1
+No solution found for depth: 2
+1364170009202
+1364170069407
+60205
+60
+0.0 $s$ & 1521730 & 1173 & 3 & 1522904 & 1445224 
+
+DFS 60.101 $s$ & 291026 & 21388 & 24 & 312415 & 1031342 
+BFS on file: random.5.xml
+60.224 $s$ & 780 & 1505414 & 1 & 1506195 & 291122 
+
+ID on file: random.5.xml
+No solution found for depth: 0
+No solution found for depth: 1
+1364170194289
+1364170254502
+60213
+60
+0.0 $s$ & 1205546 & 3628 & 2 & 1209175 & 171316 
+
+DFS on file: random.6.xml
+60.068 $s$ & 192068 & 64067 & 36 & 256136 & 451189 
+
+BFS on file: random.6.xml
+60.268 $s$ & 210 & 997921 & 1 & 998132 & 31153 
+
+ID on file: random.6.xml
+No solution found for depth: 0
+No solution found for depth: 1
+1364170379427
+1364170439686
+60259
+60
+0.0 $s$ & 1124056 & 9493 & 2 & 1133550 & 38121 
+
+
+====
+
+Greedy con F3 y H1 & 0.036 $s$ & 5 & 119 & 4 & 125 & 0 \\ \hline
+Greedy con F3 y H3 & 0.029 $s$ & 5 & 119 & 4 & 125 & 0 \\ \hline
+Greedy con F3 y H2 & 0.026 $s$ & 4 & 116 & 4 & 121 & 0 \\ \hline
+Greedy con F3 y H4 & 0.031 $s$ & 5 & 131 & 4 & 137 & 0 \\ \hline
+A* con F1 y H1 & 0.028 $s$ & 4 & 116 & 4 & 121 & 0 \\ \hline
+A* con F1 y H2 & 0.026 $s$ & 4 & 116 & 4 & 121 & 0 \\ \hline
+A* con F1 y H3 & 0.027 $s$ & 4 & 116 & 4 & 121 & 0 \\ \hline
+A* con F1 y H4 & 0.03 $s$ & 4 & 116 & 4 & 121 & 0 \\ \hline
+A* con F2 y H1 & 0.03 $s$ & 5 & 119 & 4 & 125 & 0 \\ \hline
+A* con F2 y H2 & 0.059 $s$ & 13 & 275 & 4 & 289 & 0 \\ \hline
+A* con F2 y H3 & 0.105 $s$ & 33 & 575 & 4 & 609 & 36 \\ \hline
+A* con F2 y H4 & 0.059 $s$ & 11 & 269 & 4 & 281 & 0 \\ \hline
+A* con F3 y H1 & 0.031 $s$ & 5 & 119 & 4 & 125 & 0 \\ \hline
+A* con F3 y H2 & 0.078 $s$ & 19 & 341 & 4 & 361 & 0 \\ \hline
+A* con F3 y H3 & 0.095 $s$ & 29 & 446 & 4 & 476 & 9 \\ \hline
+A* con F3 y H4 & 0.082 $s$ & 17 & 335 & 4 & 353 & 0 \\ \hline
+
+=====
+
+Greedy con H1 & 0.26 $s$ & 29 & 3338 & 9 & 3368 & 9  \\ \hline
+Greedy con H2 & 0.142 $s$ & 9 & 1131 & 9 & 1141 & 0  \\ \hline
+Greedy con H3 & 0.149 $s$ & 9 & 1131 & 9 & 1141 & 0  \\ \hline
+Greedy con H4 & 0.182 $s$ & 14 & 1666 & 9 & 1681 & 0  \\ \hline
+A* con F1 y H1 & 0.159 $s$ & 9 & 1131 & 9 & 1141 & 0  \\ \hline
+A* con F1 y H2 & 0.148 $s$ & 9 & 1131 & 9 & 1141 & 0  \\ \hline
+A* con F1 y H3 & 0.157 $s$ & 9 & 1131 & 9 & 1141 & 0  \\ \hline
+A* con F1 y H4 & 0.169 $s$ & 9 & 1131 & 9 & 1141 & 0  \\ \hline
+A* con F1 y H1 on file: random.4.xml \\ \hline
+A* con F2 y H1 & 0.255 $s$ & 29 & 3338 & 9 & 3368 & 9  \\ \hline
+A* con F2 y H2 & 0.244 $s$ & 28 & 3024 & 9 & 3053 & 0  \\ \hline
+A* con F2 y H3 & 1.56 $s$ & 558 & 68067 & 9 & 68626 & 2567  \\ \hline
+A* con F2 y H4 & 0.242 $s$ & 21 & 2615 & 9 & 2637 & 0  \\ \hline
+A* con F3 y H1 & 0.258 $s$ & 29 & 3338 & 9 & 3368 & 9  \\ \hline
+A* con F3 y H2 & 0.158 $s$ & 10 & 1386 & 9 & 1397 & 0  \\ \hline
+A* con F3 y H3 & 0.525 $s$ & 228 & 16641 & 9 & 16870 & 367  \\ \hline
+A* con F3 y H4 & 0.233 $s$ & 21 & 2107 & 9 & 2129 & 0  \\ \hline
+
+=====
+
+Greedy con H1 & 18.458 $s$ & 2420 & 648071 & 16 & 650492 & 8869  \\ \hline
+Greedy con H2 & 0.598 $s$ & 44 & 14632 & 16 & 14677 & 0  \\ \hline
+Greedy con H4 & 0.585 $s$ & 34 & 13054 & 16 & 13089 & 0  \\ \hline
+A* con F1 y H1 & 0.364 $s$ & 16 & 5968 & 16 & 5985 & 0  \\ \hline
+A* con F1 y H2 & 0.38 $s$ & 16 & 5968 & 16 & 5985 & 0  \\ \hline
+A* con F1 y H3 & 0.408 $s$ & 16 & 5968 & 16 & 5985 & 0  \\ \hline
+A* con F1 y H4 & 0.396 $s$ & 16 & 5968 & 16 & 5985 & 0  \\ \hline
+A* con F2 y H1 & 19.02 $s$ & 2420 & 648071 & 16 & 650492 & 8869  \\ \hline
+A* con F2 y H2 & 1.655 $s$ & 145 & 51951 & 16 & 52097 & 0  \\ \hline
+A* con F2 y H4 & 1.461 $s$ & 87 & 43205 & 16 & 43293 & 0  \\ \hline
+A* con F3 y H1 & 18.602 $s$ & 2420 & 648071 & 16 & 650492 & 8869  \\ \hline
+A* con F3 y H2 & 2.719 $s$ & 296 & 92972 & 16 & 93269 & 0  \\ \hline
+A* con F3 y H3 & 60.156 $s$ & 3375 & 1914769 & 3 & 1918145 & 26052  \\ \hline
+A* con F3 y H4 & 2.023 $s$ & 150 & 62770 & 16 & 62921 & 0  \\ \hline
+
+=====
+
+A* con F1 y H1 8.321 $s$ & 655 & 191226 & 25 & 191882 & 8003 
+A* con F1 y H2 1.184 $s$ & 29 & 23747 & 25 & 23777 & 688 
+A* con F1 y H4 1.305 $s$ & 29 & 23747 & 25 & 23777 & 688 
+
+=====
+
+A* con F1 y H1 on file: random.6.xml
+60.327 $s$ & 503 & 803153 & 16 & 803657 & 32108 
+
+Greedy con F1 y H1 on file: random.6.xml
+60.134 $s$ & 7073 & 666549 & 31 & 673623 & 108714 
+
+A* con F2 y H1 on file: random.6.xml
+60.124 $s$ & 7780 & 738193 & 31 & 745974 & 119731 
+
+Greedy con F2 y H1 on file: random.6.xml
+60.182 $s$ & 6586 & 617285 & 31 & 623872 & 100105 
+
+A* con F3 y H1 on file: random.6.xml
+60.14 $s$ & 7642 & 725699 & 32 & 733342 & 117771 
+
+Greedy con F3 y H1 on file: random.6.xml
+60.143 $s$ & 7543 & 710996 & 30 & 718540 & 115681 
+
+A* con F1 y H3 on file: random.6.xml
+60.11 $s$ & 1545 & 924190 & 24 & 925736 & 51789 
+
+Greedy con F1 y H3 on file: random.6.xml
+60.147 $s$ & 1753 & 946334 & 24 & 948088 & 58213 
+
+A* con F2 y H3 on file: random.6.xml
+60.327 $s$ & 253 & 993673 & 4 & 993927 & 29502 
+
+Greedy con F2 y H3 on file: random.6.xml
+60.14 $s$ & 2042 & 1105487 & 25 & 1107530 & 67063 
+
+A* con F3 y H3 on file: random.6.xml
+60.42 $s$ & 229 & 935463 & 3 & 935693 & 22568 
+
+Greedy con F3 y H3 on file: random.6.xml
+60.152 $s$ & 2084 & 1126499 & 24 & 1128584 & 67169 
+
+A* con F1 y H2 on file: random.6.xml
+7.19 $s$ & 251 & 89672 & 36 & 89924 & 2109 
+
+Greedy con F1 y H2 on file: random.6.xml
+60.116 $s$ & 3326 & 709547 & 31 & 712874 & 62283 
+
+A* con F2 y H2 on file: random.6.xml
+60.277 $s$ & 331 & 957847 & 10 & 958179 & 26790 
+
+Greedy con F2 y H2 on file: random.6.xml
+60.135 $s$ & 3145 & 680845 & 27 & 683991 & 59766 
+
+A* con F3 y H2 on file: random.6.xml
+60.3 $s$ & 195 & 821494 & 4 & 821690 & 19203 
+
+Greedy con F3 y H2 on file: random.6.xml
+60.105 $s$ & 2939 & 640457 & 28 & 643397 & 55368 
+
+A* con F1 y H4 on file: random.6.xml
+8.888 $s$ & 471 & 113774 & 36 & 114246 & 2391 
+
+Greedy con F1 y H4 on file: random.6.xml
+60.11 $s$ & 2096 & 591608 & 33 & 593705 & 48924 
+
+A* con F2 y H4 on file: random.6.xml
+60.159 $s$ & 300 & 871174 & 9 & 871475 & 24318 
+
+Greedy con F2 y H4 on file: random.6.xml
+60.183 $s$ & 2346 & 650474 & 29 & 652821 & 48924 
+
+A* con F3 y H4 on file: random.6.xml
+60.35 $s$ & 190 & 801499 & 4 & 801690 & 18723 
+
+Greedy con F3 y H4 on file: random.6.xml
+60.142 $s$ & 2167 & 610701 & 28 & 612869 & 48924 & 

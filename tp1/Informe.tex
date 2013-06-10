@@ -1,0 +1,204 @@
+\documentclass[11pt,twocolumn]{article}
+\usepackage[utf8]{inputenc}
+\usepackage[spanish]{babel}
+\usepackage{amsmath}
+\addto\captionsspanish{\renewcommand{\tablename}{Tabla}}
+\usepackage{ifpdf}
+\usepackage{array}
+\newcolumntype{L}[1]{>{\raggedright\let\newline\\\arraybackslash\hspace{0pt}}m{#1}}
+\newcolumntype{C}[1]{>{\centering\let\newline\\\arraybackslash\hspace{0pt}}m{#1}}
+\newcolumntype{R}[1]{>{\raggedleft\let\newline\\\arraybackslash\hspace{0pt}}m{#1}}
+\ifpdf
+    \usepackage[pdftex]{graphicx}   % to include graphics
+    \pdfcompresslevel=9 
+    \usepackage[pdftex,     % sets up hyperref to use pdftex driver
+            plainpages=false,   % allows page i and 1 to exist in the same document
+            breaklinks=true,    % link texts can be broken at the end of line
+            colorlinks=true,
+            pdftitle=My Document
+            pdfauthor=My Good Self
+           ]{hyperref} 
+    \usepackage{thumbpdf}
+\else 
+    \usepackage{graphicx}       % to include graphics
+    \usepackage{hyperref}       % to simplify the use of \href
+\fi
+
+
+\title{Sistemas de Inteligencia Artificial\\
+Métodos de búsqueda no informados e informados\\
+Eternity 2}
+\author{Esteban Pintos (51048) - Cristian Pereyra (51190) - Matías De Santi (51051)}
+\date{25 de Marzo de 2013}
+
+\begin{document}
+\maketitle
+
+\section{Introducción}
+\par Para el primer trabajo práctico de la materia se nos pidió resolver el juego Eternity 2 utilizando métodos de búsqueda no informados e informados. Este informe explica cómo se representó el problema para ser resuelto y muestra los resultados obtenidos a partir de las diferentes resoluciones.
+
+\section{Breve explicación del juego Eternity 2}
+\par El juego Eternity 2 consta de un tablero cuadrado de $nxn$ con $n^2$ piezas a ser colocadas. Cada pieza tiene la particularidad de que tiene 4 colores, uno en cada lado. El objetivo del juego es colocar todas las piezas de manera tal que las piezas con color gris queden en los bordes (con el color gris tocando el borde) y las piezas adyacentes tengan el mismo color en el borde que comparten. Las piezas pueden ser rotadas antes de ser colocadas. Un ejemplo de este juego se encuentra en la siguente URL: http://www.juegosrox.com/logica/juego-eternity-2.html.
+
+\section{Definición del problema}
+\par Antes de realizar una representación del problema, se optó por definir el problema de manera clara. Para esto, definimos lo siguiente:
+    \begin{itemize}
+        \item \textbf{Estado inicial}: tablero vacío
+		\item \textbf{Conjunto de posibles acciones}: dado un estado, se puede colocar sobre el tablero cualquier ficha siempre y cuando esta no haya sido colocada antes y no haya una ficha en la posición que se quiere colocar.
+		\item \textbf{Modelo de transición}: colocar una pieza en una posición del tablero da como resultado un nuevo tablero con todas las fichas que tenía el anterior más la que ha sido colocada
+		\item \textbf{Condición de solución}: un tablero es solución del problema si las fichas con color gris han sido colocadas con el color gris del lado del borde y para toda ficha adyacente en el tablero, los colores de los bordes que comparten son iguales.
+	\end{itemize}
+    
+\section{Representación del problema}
+\par Una vez definido el problema, se realizó la representación del mismo.
+    \subsection{Representación de estados}
+        \par Para representar los estados, se optó por que cada uno tuviera un tablero, la pieza que se colocó sobre el mismo y una referencia al estado a partir del cual se generó.
+        \par El tablero se representó con un HashMap cuya clave es un punto del tablero y el valor es la pieza colocada. Al crear un estado, el tablero únicamente contiene la pieza que diferencia al estado actual de su padre. Esto se dedidió que sea así para poder ahorrar el uso de memoria hasta que realmente sea necesario tener guardadas todas las piezas. Cuando al tablero se le pide la pieza en una posición que no tiene guardada, este se la pide al estado padre y así sucesivamente. Si alguno de los padres tiene guardada una pieza en dicha posición, la retorna y todos los hijos almacenan dicha información para no tener que volver a pedirla. En caso de que la posición solicitada esté vacía, se retorna una pieza vacía y todos los estados hijos también la almacenan. Es por esto que un estado cuenta con una referencia al estado padre.
+        \par Es importante también la forma en que se representó una pieza. En este caso, se optó por representar una pieza como un objeto con 4 variables: $up$, $right$, $down$ y $left$. Cada una de estas variables indica el color que tiene la pieza en cada uno de los bordes. Una pieza vacía tiene todas estas variables con valor $-1$. El color que debe estar contra los bordes del tablero se indica con el número $0$. Esto es una abstracción respecto del problema original ya que el mismo cuenta con colores y formas. En esta representación, se asigna un número a cada combinación posible de color y forma.
+        \par Una vez que se tuvo representado un estado cualquiera y las piezas, se definió el estado inicial. El estado inicial se representó con un tablero vacío, la pieza colocada en $null$ al igual que la referencia al estado padre.
+
+    \subsection{Acciones posibles}
+    \par Si bien existen dos posibles acciones en el juego real (colocar una pieza en una posición del tablero y rotar una pieza), se decidió reducir a una sola las acciones posibles en la representación del problema: colocar una pieza en una posición del tablero. El poder rotar las piezas se resolvió de la siguiente manera: cuando se inicia el programa, se crean todas las posibles reglas, siendo cada una de la siguiente forma: colocar la pieza $p$ en la posición $x$, $y$. Al generar las reglas para todas las piezas, también se generan reglas para las piezas rotadas. Esto hace que todas las reglas sean iguales y por lo tanto la aplicación de la misma es sumamente sencilla: se debe verificar que la pieza no haya sido colocada en el tablero (ya sea rotada o no) y que la posición en la cual se quiere colocar no haya otra pieza.
+    \subsection{Modelo de transición}
+    \par Al aplicar una regla sobre un tablero, se retorna un tablero nuevo con la pieza que se agregó en la posición indicada.
+    \subsection{Condición de terminación}
+    \par El tablero debe estar completo y las piezas deben cumplir las siguientes condiciones:
+        \begin{itemize}
+        \item Si la pieza contiene color $0$, entonces este color debe estar pegado a un borde del tablero.
+        \item Las piezas adyacentes deberan tener los mismos colores en los bordes que tienen en común.
+        \end{itemize}
+
+\section{Algoritmos implementados}
+    \subsection{Algoritmos no informados}
+    \par Se implementaron tres algoritmos no informados: \textbf{Depth First Search} (DFS), \textbf{Breadth First Search} (BFS) y \textbf{Iterative Deepening} (ID).
+    \subsection{Algoritmos informados}
+    \par Se implementaron dos algoritmos informados: \textbf{Greedy Search} y \textbf{A*}. Para estos algoritmos se utilizaron 3 funciones distintas:
+        \begin{itemize}
+            \item $g(n)$: costo de haber llegado del nodo inicial al nodo $n$, utilizado sólo por \textbf{A*}.
+            \item $h(n)$: estimación del costo de llegar del nodo $n$ al nodo $goal$
+        \end{itemize}
+\section{Heurísticas}
+    \par Para este trabajo se implementaron tres heurísticas distintas. La característica en común de las mismas es que parten del hecho que el tablero es válido. Si el estado es inválido, es decir que el tablero no está bien formado, entonces la heurística devuelve el máximo valor posible para evitar que se explore dicho estado.
+    \subsection{Heurística 1: distancias Manhattan}
+        \par Esta heurística surgió luego de jugar el juego repetidas veces. Se vió que si se colocan las piezas de los bordes primero, y luego se continúa con las piezas que son adyacentes a las del borde, entonces el problema se puede resolver de manera más rápida. Para poder llevar esto a código, se decidió realizarlo de la siguiente manera.
+        \par Se tomó un valor fijo para un tablero de dimensión $n x n$ que es la suma de las distancias manhattan de cada posición del tablero. Por ejemplo, para un tablero de dimensión $5x5$ esta suma da 60.
+        \par Por otra parte, para un estado dado, se calcula la suma de las distancias manhattan de las piezas que estan colocadas. Como las piezas que estan en los bordes tienen una distancia mayor que las que estan más cerca del borde, cuantas mas piezas estén colocadas en los bordes esta suma será mayor.
+        \par Finalmente, la $h(n)$ se calcula como la resta entre el valor calculado para el tablero entero y el valor calculado para el estado dado.
+    \subsection{Heurística 2: orden de colocación de las piezas}
+    \par Esta heurística es más simple que la mencionada anteriormente. En este caso, el objetivo de la heurística es colocar las piezas en orden de espiral, empezando del $(0,0)$, luego el $(0,1)$ y así hasta completar la primer fila. Luego desciende por la ultima columna y continúa de esa manera.
+    \subsection{Heurística 3: color de piezas}
+        \par Esta heurística penaliza aquellos tableros en los cuales ninguna ficha puede ser colocada ya que no existe ninguna ficha en el tablero con el color correspondiente para que alguna de las que falta colocar sea colocada. Es decir, ese tablero no conducirá a una solución válida.
+        
+Es imporante aclarar que ninguna de las heurísticas presentadas es admisible.
+    
+\section{Funciones de costo}
+    \par Se desarrollaron 3 funciones de costo
+    \subsection{Función 1: Costo basado en rotaciones}
+        \par Se desarrolló una función de costo cuyo objetivo es desalentar a los caminos que tengan piezas rotadas, para evitar tener que analizar simetrías.
+    \subsection{Función 2: Costo uniforme}
+        \par Retorna el mismo valor parar todos los estados.
+    \subsection{Función 3: Costo basado en distancia al centro}
+        \par Le da menor valor de heurística a aquellos tableros que tiene mayor cantidad de piezas puestas en las afueras.
+
+\section{Resultados}
+    \par Los resultados que se comentan a continuación fueron extraidos de pruebas realizadas sobre tableros de diferentes dimensiones, pero todos los tableros contaban con 6 colores distintos más el color gris. A los algoritmos se les dio un tiempo máximo de ejecución de 60 segundos. Las pruebas fueron realizadas en una computadora con un procesador Intel Core i7 de 2 GHz y una memoria RAM exclusiva para el programa de 12GB. Aquellos resultados cuyo Tiempo de Sim. sea "- $s$" quiere decir que dicho algoritmo no encontró solución antes del tiempo máximo.
+    \par En la tabla \ref{table:2x2} se pueden ver los resultados de los distintos algoritmos para un tablero de 2x2. Si bien los tiempos de ejecución son relativamente chicos, es interesante destacar la cantidad de nodos expandidos en cada algoritmo. Los algoritmos informados expanden una cantidad considerablemente menor que los no informados (exceptuando a A* con Manhattan distance y costo basado en colres).
+    \par Para un tablero de 3x3, los resultados pueden verse en la tabla \ref{table:3x3}. Como puede observarse, para este tablero los métodos no informados tardan considerablemente más que los informados. Si se toma el algoritmo Greedy con la heurística de Manhattan distance para ambos tableros, el incremento de tiempos fue del 722\%. Esto se explica teniendo en cuenta el factor de ramificación.
+    \subsection{Factor de ramificación}
+        \par Al iniciar el programa se crean las reglas de la siguiente manera: para cada pieza del tablero se crea una regla para cada posición del tablero. Es decir, por cada pieza se crean $n^2$ reglas. Además, se deben crear las reglas para la misma pieza rotada, por lo cual por cada pieza se crean $4 n^2$ reglas. Dado que existen $n^2$ piezas en el juego, hay $4 n^4$ reglas.
+        \par Todas estas reglas son aplicables en el primer estado, por lo cual el estado inicial tendrá $4 n^4$ hijos. Cada uno de estos hijos a su vez tendrá $4 n^4 - 4$ reglas para aplicar ya que 4 reglas no son aplicables porque una pieza ya se colocó. En resumen, dado un nodo del árbol de búsqueda cuya profundidad es $d$, entonces el factor de ramificación es $b = 4 n^4 - 4 \times d$.
+        \par A continuación se muestra una tabla donde, para cada tamaño de tablero, se muestran la cantidad de nodos que tiene el árbol de exploración:
+        \begin{itemize}
+            \item \textbf{2x2}: 11182080
+            \item \textbf{3x3}: 24817428680914501632000
+            \item \textbf{4x4}: 905703814554358516996854857467489
+            926355353600000
+        \end{itemize}
+    \par Sin embargo, estos números tienen en cuenta el orden de aplicación de las reglas y por lo tanto existen un gran número de simetrías que deben ser detectadas para evitar analizar dos veces estados equivalentes. Además, como las reglas no validan que el estado que se genera sea válido, muchos de estos estados son inválidos y por lo tanto no llevarán a una solución correcta. Sin embargo, deben ser analizados hasta que esté completo y por eso es que los algoritmos no informados son sumamente lentos.
+    \par El rápido crecimiento de la cantidad de estados a analizar trajo como consecuencia que la memoria RAM fuera una limitación a la hora de correr los algoritmos. Aquellos algoritmos que no contaban con información acerca del problema se quedaban rápidamente sin memoria RAM. Lo mismo le sucedió a los algoritmos informados, pero a diferencia de los no informados, llegaron a resolver tableros de 4x4 y con 6 colores. Sin embargo, a la hora de resolver tableros de 5x5 y 6 colores, sufrieron la falta de memoria RAM.
+    \subsection{Tableros de dimensión superior a 3x3}
+        \par Considerando que para un tablero de 3x3 se hallaban soluciones solamente con heurísticas, se decidió probar con un tablero de 4x4 y utilizar dichas heurísticas. Los resultados pueden verse en la tabla \ref{table:4x4}. Es realmente interesante observar la diferencia de tiempos y de nodos expandidos entre el algoritmo Greedy y el A*. Si bien los dos utilizan la misma función heurística, el costo basado en rotaciones parece hacer un muy buen trabajo para evitar tener que comparar por simetrías. La cantidad de nodos hoja y de estados generados en el A* no supera los 6000 mientras que el algoritmo Greedy ronda los 670000.
+
+\section{Conclusiones}
+    \par Como conclusión podemos decir que es notable la diferencia en cuanto a tiempos de ejecución, nodos expandidos, nodos hoja, etc. entre los algoritmos informados y los no informados. Dado que las reglas aplicadas pueden dejar el nodo con un estado inválido, la cantidad de nodos a procesar crece de manera abrupta entre un nodo y su hijo. Por lo tanto, aquellos algoritmos que cuentan con información sobre el problema como para poder elegir estados que potencialmente pueden llevar a una solución son de gran ayuda para reducir el tiempo de procesamiento. Esto es evidente en tableros de dimensión superior a 2x2, donde los algoritmos informados no pudieron dar una respuesta al problema.
+    \par También queremos destacar que el efecto de las distintas combinaciones entre heurísticas y funciones de costo afecta al tiempo de procesamiento en los algoritmos informados. Puede que la heurística utilizada sea buena, pero si no es acompañada por una buena función de costo entonces no se maximiza el potencial de ambas.
+    
+    \par Por último, a lo largo del trabajo aprendimos que la representación del problema juega un papel crucial. Si una representación no cuida la memoria utilizada, entonces correr el algoritmo es altamente costoso. 
+
+\clearpage
+\onecolumn
+\appendix
+    \subsection{Resultados}
+        \begin{table}[htdp]
+        \caption{Resultados para un tablero de 2x2}
+            	\begin{center}
+    				\begin{tabular}{|C{3cm}|C{2cm}|C{2cm}|C{2cm}|C{1.5cm}|C{2cm}|C{2cm}|} \hline
+    					Algoritmo & Tiempo de Sim. & Nodos expandidos & Nodos hoja & Profundidad & Estados generados & Simetrias Detectadas \\ \hline\hline
+    					DFS & 0.147 $s$ & 736 & 108 & 4 & 845 & 1056\\ \hline
+                        BFS & 0.435 $s$ & 7892 & 5612 & 4 & 13505 & 31872\\ \hline
+                        ID & 0.430 $s$ & 9380 & 108 & 4 & 9489 & 15648\\ \hline
+                        Greedy con H1 & 0.036 $s$ & 5 & 119 & 4 & 125 & 0 \\ \hline
+                        Greedy con H3 & 0.029 $s$ & 5 & 119 & 4 & 125 & 0 \\ \hline
+                        Greedy con H2 & 0.026 $s$ & 4 & 116 & 4 & 121 & 0 \\ \hline
+                        A* con F1 y H1 & 0.028 $s$ & 4 & 116 & 4 & 121 & 0 \\ \hline
+                        A* con F1 y H2 & 0.026 $s$ & 4 & 116 & 4 & 121 & 0 \\ \hline
+                        A* con F1 y H3 & 0.027 $s$ & 4 & 116 & 4 & 121 & 0 \\ \hline
+                        A* con F2 y H1 & 0.03 $s$ & 5 & 119 & 4 & 125 & 0 \\ \hline
+                        A* con F2 y H2 & 0.059 $s$ & 13 & 275 & 4 & 289 & 0 \\ \hline
+                        A* con F2 y H3 & 0.105 $s$ & 33 & 575 & 4 & 609 & 36 \\ \hline
+                        A* con F3 y H1 & 0.031 $s$ & 5 & 119 & 4 & 125 & 0 \\ \hline
+                        A* con F3 y H2 & 0.078 $s$ & 19 & 341 & 4 & 361 & 0 \\ \hline
+                        A* con F3 y H3 & 0.095 $s$ & 29 & 446 & 4 & 476 & 9 \\ \hline
+    				\end{tabular}
+    			\end{center}
+                \label{table:2x2}
+    	\end{table}
+        \begin{table}[htdp]
+        \caption{Resultados para un tablero de 3x3}
+                \begin{center}
+    				\begin{tabular}{|C{3cm}|C{2cm}|C{2cm}|C{2cm}|C{1.5cm}|C{2cm}|C{2cm}|} \hline
+    					Algoritmo & Tiempo de Sim. & Nodos expandidos & Nodos hoja & Profundidad & Estados generados & Simetrias Detectadas \\ \hline\hline
+    					DFS & - $s$ & 1358970 & 1106 & 8 & 1360077 & 4328064 \\ \hline
+                        BFS & - $s$ & 21340 & 1866356 & 2 & 1887697 & 2314512 \\ \hline
+                        ID & - $s$ & 1963069 & 422 & 3 & 1963492 & 2413296 \\ \hline
+                        Greedy con H1 & 0.26 $s$ & 29 & 3338 & 9 & 3368 & 9  \\ \hline
+                        Greedy con H2 & 0.142 $s$ & 9 & 1131 & 9 & 1141 & 0  \\ \hline
+                        Greedy con H3 & 0.149 $s$ & 9 & 1131 & 9 & 1141 & 0  \\ \hline
+                        A* con F1 y H1 & 0.159 $s$ & 9 & 1131 & 9 & 1141 & 0  \\ \hline
+                        A* con F1 y H2 & 0.148 $s$ & 9 & 1131 & 9 & 1141 & 0  \\ \hline
+                        A* con F1 y H3 & 0.157 $s$ & 9 & 1131 & 9 & 1141 & 0  \\ \hline
+                        A* con F2 y H1 & 0.255 $s$ & 29 & 3338 & 9 & 3368 & 9  \\ \hline
+                        A* con F2 y H2 & 0.244 $s$ & 28 & 3024 & 9 & 3053 & 0  \\ \hline
+                        A* con F2 y H3 & 1.56 $s$ & 558 & 68067 & 9 & 68626 & 2567  \\ \hline
+                        A* con F3 y H1 & 0.258 $s$ & 29 & 3338 & 9 & 3368 & 9  \\ \hline
+                        A* con F3 y H2 & 0.158 $s$ & 10 & 1386 & 9 & 1397 & 0  \\ \hline
+                        A* con F3 y H3 & 0.525 $s$ & 228 & 16641 & 9 & 16870 & 367  \\ \hline
+    				\end{tabular}
+    			\end{center}
+                \label{table:3x3}
+    	\end{table}
+          \begin{table}[htdp]
+        \caption{Resultados para tableros de dimensión mayor a 3x3}
+                \begin{center}
+        			\begin{tabular}{|C{3cm}|C{2cm}|C{2cm}|C{2cm}|C{1.5cm}|C{2cm}|C{2cm}|} \hline
+    					Algoritmo & Tiempo de Sim. & Nodos expandidos & Nodos hoja & Profundidad & Estados generados & Simetrias Detectadas \\ \hline\hline
+                        4x4  & & & & & & \\ \hline
+                        Greedy con H1 & 18.458 $s$ & 2420 & 648071 & 16 & 650492 & 8869  \\ \hline
+                        Greedy con H2 & 0.598 $s$ & 44 & 14632 & 16 & 14677 & 0  \\ \hline
+                        A* con F1 y H1 & 0.364 $s$ & 16 & 5968 & 16 & 5985 & 0  \\ \hline
+                        A* con F1 y H2 & 0.38 $s$ & 16 & 5968 & 16 & 5985 & 0  \\ \hline
+                        A* con F1 y H3 & 0.408 $s$ & 16 & 5968 & 16 & 5985 & 0  \\ \hline
+                        A* con F2 y H1 & 19.02 $s$ & 2420 & 648071 & 16 & 650492 & 8869  \\ \hline
+                        A* con F2 y H2 & 1.655 $s$ & 145 & 51951 & 16 & 52097 & 0  \\ \hline
+                        A* con F3 y H1 & 18.602 $s$ & 2420 & 648071 & 16 & 650492 & 8869  \\ \hline
+                        A* con F3 y H2 & 2.719 $s$ & 296 & 92972 & 16 & 93269 & 0  \\ \hline
+                        5x5 & & & & & & \\ \hline
+                        A* con F1 y H1 & 8.321 $s$ & 655 & 191226 & 25 & 191882 & 8003  \\ \hline
+                        A* con F1 y H2 & 1.184 $s$ & 29 & 23747 & 25 & 23777 & 688   \\ \hline
+                        6x6 & & & & & & \\ \hline
+                        A* con F1 y H2 & 7.19 $s$ & 251 & 89672 & 36 & 89924 & 2109 \\ \hline
+    				\end{tabular}
+    			\end{center}
+                \label{table:4x4}
+    	\end{table}
+\end{document}
